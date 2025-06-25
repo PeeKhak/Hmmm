@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ល្បែងទីតក់ ធ្វើខ្នែង</title>
+    <title>😡លេងទៅ កុំធ្វើការ😡</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -77,7 +77,7 @@
     </style>
 </head>
 <body>
-    <h1>ល្បែងទីតក់ ធ្វើខ្នែង</h1>
+    <h1>😡លេងទៅ កុំធ្វើការ😡</h1>
     <div id="status">Select a difficulty to start</div>
     <div id="controls">
         <button id="hard-bot" class="difficulty-btn">Hard Bot</button>
