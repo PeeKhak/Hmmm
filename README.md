@@ -1,10 +1,10 @@
-#Hmm KDMV
+#Make by PeeKhak
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>😡លេងទៅ កុំធ្វើការ😡</title>
+    <title>ល្បែងល្បងប្រាជ្ញា​</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -77,7 +77,7 @@
     </style>
 </head>
 <body>
-    <h1>😡លេងទៅ កុំធ្វើការ😡</h1>
+    <h1>ល្បែងល្បងប្រាជ្ញា​</h1>
     <div id="status">Select a difficulty to start</div>
     <div id="controls">
         <button id="hard-bot" class="difficulty-btn">Hard Bot</button>
@@ -160,7 +160,7 @@
             }
         }
 
-        // Hard Bot (~20% player win rate): Strong but not perfect
+        // Hard Bot (~10% player win rate): Very strong but allows rare wins
         function findHardBotMove() {
             // 1. Win with 5 in a row
             let move = checkForWinOrBlock('O', 5);
@@ -176,15 +176,15 @@
             if (move !== null) return move;
             move = checkForWinOrBlock('X', 4);
             if (move !== null) return move;
-            // 5. Set up or block 3 in a row (50% chance)
-            if (Math.random() < 0.5) {
+            // 5. Set up or block 3 in a row (75% chance)
+            if (Math.random() >= 0.25) {
                 move = checkForWinOrBlock('O', 3);
                 if (move !== null) return move;
                 move = checkForWinOrBlock('X', 3);
                 if (move !== null) return move;
             }
-            // 6. Set up or block 2 in a row (50% chance)
-            if (Math.random() < 0.5) {
+            // 6. Set up or block 2 in a row (75% chance)
+            if (Math.random() >= 0.25) {
                 move = checkForWinOrBlock('O', 2);
                 if (move !== null) return move;
                 move = checkForWinOrBlock('X', 2);
@@ -252,7 +252,7 @@
             return bestMove;
         }
 
-        // Minimax with simplified scoring
+        // Minimax with enhanced scoring
         function minimax(board, depth, isMaximizing, alpha, beta, depthLimit) {
             if (checkWin('O')) return 1000 - depth;
             if (checkWin('X')) return -1000 + depth;
@@ -291,7 +291,7 @@
             }
         }
 
-        // Simplified board evaluation
+        // Enhanced board evaluation
         function evaluateBoard(board) {
             let score = 0;
 
@@ -322,24 +322,24 @@
             for (const line of lines) {
                 const oCount = line.filter(cell => cell === 'O').length;
                 const xCount = line.filter(cell => cell === 'X').length;
-                if (xCount === 0 && oCount >= 3) {
-                    score += Math.pow(8, oCount); // Reward O's for 3+ in a row
-                } else if (oCount === 0 && xCount >= 3) {
-                    score -= Math.pow(8, xCount); // Penalize X's for 3+ in a row
+                if (xCount === 0 && oCount >= 2) {
+                    score += Math.pow(9, oCount); // Reward O's for 2+ in a row
+                } else if (oCount === 0 && xCount >= 2) {
+                    score -= Math.pow(9, xCount); // Penalize X's for 2+ in a row
                 }
             }
 
             // Center control bonus
             const centerCells = [44, 45, 54, 55]; // Center 4 cells
             for (const index of centerCells) {
-                if (board[index] === 'O') score += 20;
-                if (board[index] === 'X') score -= 20;
+                if (board[index] === 'O') score += 30;
+                if (board[index] === 'X') score -= 30;
             }
 
             return score;
         }
 
-        // Get scored move (clustering and center preference)
+        // Get scored move (enhanced clustering and center preference)
         function getScoredMove() {
             const emptyCells = gameBoard
                 .map((val, idx) => (val === '' ? idx : null))
@@ -365,13 +365,13 @@
                     row < gridSize - 1 && col > 0 ? index + gridSize - 1 : null, // bottom-left
                     row < gridSize - 1 && col < gridSize - 1 ? index + gridSize + 1 : null, // bottom-right
                 ].filter(n => n !== null && gameBoard[n] === 'O');
-                score += neighbors.length * 10; // 10 points per adjacent O
+                score += neighbors.length * 15; // 15 points per adjacent O
 
                 // Center preference
                 const centerRow = Math.abs(row - 4.5);
                 const centerCol = Math.abs(col - 4.5);
                 const centerDistance = Math.sqrt(centerRow * centerRow + centerCol * centerCol);
-                score += (5 - centerDistance) * 5; // Reduced bonus for center
+                score += (5 - centerDistance) * 7; // Increased bonus for center
 
                 if (score > bestScore) {
                     bestScore = score;
