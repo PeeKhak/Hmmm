@@ -4,6 +4,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Game KDMV</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="intro">
+        <h1>Welcome to Game KDMV</h1>
+        <p>Loading the game...</p>
+        <button onclick="window.location.href='game.html'">Skip Intro</button>
+    </div>
+    <script>
+        // Redirect to the game after 3 seconds
+        setTimeout(() => {
+            window.location.href = "game.html";
+        }, 3000);
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>លេងកុំគិតធ្វើការ</title>
     <style>
         body {
