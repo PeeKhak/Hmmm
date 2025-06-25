@@ -78,11 +78,11 @@
 </head>
 <body>
     <h1>ល្បែងល្បងប្រាជ្ញា​</h1>
-    <div id="status">Select a difficulty to start</div>
+    <div id="status">ជ្រើសរើស វគ្គដែលអ្នកចង់លេខ</div>
     <div id="controls">
-        <button id="hard-bot" class="difficulty-btn">Hard Bot</button>
-        <button id="medium-bot" class="difficulty-btn">Medium Bot</button>
-        <button id="easy-bot" class="difficulty-btn">Easy Bot</button>
+        <button id="hard-bot" class="difficulty-btn">ពិបាក</button>
+        <button id="medium-bot" class="difficulty-btn">ធម្មតា</button>
+        <button id="easy-bot" class="difficulty-btn">ងាយស្រួល</button>
     </div>
     <div id="board"></div>
     <button id="restart">Restart Game</button>
