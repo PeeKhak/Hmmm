@@ -1,4 +1,3 @@
-# Hmmm
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,12 +20,57 @@
     </script>
 </body>
 </html>
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
+}
+
+.intro {
+    text-align: center;
+    animation: fadeOut 3s ease-in-out forwards;
+}
+
+.intro h1 {
+    font-size: 2.5em;
+    color: #333;
+}
+
+.intro p {
+    font-size: 1.2em;
+    color: #666;
+}
+
+.intro button {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin-top: 10px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    color: white;
+}
+
+.intro button:hover {
+    background-color: #388e3c;
+}
+
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { opacity: 0; }
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>លេងកុំគិតធ្វើការ</title>
+    <title>ល្បែងទីតក់ ធ្វើខ្នែង</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -99,7 +143,7 @@
     </style>
 </head>
 <body>
-    <h1>លេងកុំគិតធ្វើការ</h1>
+    <h1>khom lg tv KDMV</h1>
     <div id="status">Select a difficulty to start</div>
     <div id="controls">
         <button id="hard-bot" class="difficulty-btn">Hard Bot</button>
