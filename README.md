@@ -78,7 +78,7 @@
 </head>
 <body>
     <h1>ល្បែងល្បងប្រាជ្ញា​</h1>
-    <div id="status">ជ្រើសរើស វគ្គដែលអ្នកចង់លេខ</div>
+    <div id="status">ជ្រើសរើស វគ្គដែលចង់លេខ</div>
     <div id="controls">
         <button id="hard-bot" class="difficulty-btn">ពិបាក</button>
         <button id="medium-bot" class="difficulty-btn">ធម្មតា</button>
