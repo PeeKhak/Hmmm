@@ -85,7 +85,7 @@
         <button id="easy-bot" class="difficulty-btn">ងាយស្រួល</button>
     </div>
     <div id="board"></div>
-    <button id="restart">Restart Game</button>
+    <button id="restart">ចាប់ផ្តើមម្តងទៀត</button>
 
     <script>
         const boardElement = document.getElementById('board');
