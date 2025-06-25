@@ -13,7 +13,7 @@
         <button onclick="window.location.href='game.html'">Skip Intro</button>
     </div>
     <script>
-        // Redirect to the game after 3 seconds
+        // Redirect to the game after 15 seconds
         setTimeout(() => {
             window.location.href = "game.html";
         }, 3000);
