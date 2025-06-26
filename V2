@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ល្បែងល្បងប្រាជ្ញា​</title>
+    <title>ល្បែងទីតក់ ធ្វើខ្នែង</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -32,6 +32,14 @@
         }
         .cell:hover {
             background: #e0e0e0;
+        }
+        .player-win {
+            background: #4CAF50 !important;
+            color: white;
+        }
+        .bot-win {
+            background: #d32f2f !important;
+            color: white;
         }
         #status {
             font-size: 24px;
@@ -74,18 +82,52 @@
         #restart:hover {
             background-color: #4a148c;
         }
+        #game-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        #game-message {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 36px;
+            font-weight: bold;
+            color: white;
+            min-width: 300px;
+        }
+        #game-message.win {
+            background: #4CAF50;
+        }
+        #game-message.lose {
+            background: #d32f2f;
+        }
+        #game-message.draw {
+            background: #FF5733;
+        }
     </style>
 </head>
 <body>
-    <h1>ល្បែងល្បងប្រាជ្ញា​</h1>
-    <div id="status">ជ្រើសរើស វគ្គដែលចង់លេខ</div>
+    <h1>ល្បែងទីតក់ ធ្វើខ្នែង</h1>
+    <div id="status">Select a difficulty to start</div>
     <div id="controls">
-        <button id="hard-bot" class="difficulty-btn">ពិបាក</button>
-        <button id="medium-bot" class="difficulty-btn">ធម្មតា</button>
-        <button id="easy-bot" class="difficulty-btn">ងាយស្រួល</button>
+        <button id="hard-bot" class="difficulty-btn">Hard Bot</button>
+        <button id="medium-bot" class="difficulty-btn">Medium Bot</button>
+        <button id="easy-bot" class="difficulty-btn">Easy Bot</button>
     </div>
     <div id="board"></div>
-    <button id="restart">ចាប់ផ្តើមម្តងទៀត</button>
+    <button id="restart">Restart Game</button>
+    <div id="game-overlay">
+        <div id="game-message"></div>
+    </div>
 
     <script>
         const boardElement = document.getElementById('board');
@@ -94,6 +136,8 @@
         const hardBotBtn = document.getElementById('hard-bot');
         const mediumBotBtn = document.getElementById('medium-bot');
         const easyBotBtn = document.getElementById('easy-bot');
+        const gameOverlay = document.getElementById('game-overlay');
+        const gameMessage = document.getElementById('game-message');
         const gridSize = 10;
         let gameBoard = Array(gridSize * gridSize).fill('');
         let currentPlayer = 'X'; // Human is X, Bot is O
@@ -131,17 +175,80 @@
             boardElement.children[index].textContent = player;
             updateStatus();
             if (checkWin(player)) {
+                const winningCells = getWinningCells(player);
+                highlightWinningCells(winningCells, player);
                 statusElement.textContent = `${player === 'X' ? 'You win! 5 in a row!' : 'Bot wins! 5 in a row!'}`;
                 statusElement.style.color = '#4CAF50';
+                showGameOverlay(player === 'X' ? 'You Win!' : 'Bot Wins!', player === 'X' ? 'win' : 'lose');
                 gameActive = false;
             } else if (!gameBoard.includes('')) {
                 statusElement.textContent = "It's a draw!";
                 statusElement.style.color = '#FF5733';
+                showGameOverlay("It's a Draw!", 'draw');
                 gameActive = false;
             } else {
                 currentPlayer = player === 'X' ? 'O' : 'X';
                 updateStatus();
             }
+        }
+
+        // Show game overlay with win/loss/draw message for 5 seconds
+        function showGameOverlay(message, type) {
+            gameMessage.textContent = message;
+            gameMessage.className = ''; // Reset classes
+            gameMessage.classList.add('game-message', type);
+            gameOverlay.style.display = 'flex';
+            setTimeout(() => {
+                gameOverlay.style.display = 'none';
+            }, 5000); // Hide after 5 seconds
+        }
+
+        // Highlight winning cells
+        function highlightWinningCells(cells, player) {
+            cells.forEach(index => {
+                boardElement.children[index].classList.add(player === 'X' ? 'player-win' : 'bot-win');
+            });
+        }
+
+        // Get winning cells (returns array of 5 cell indices)
+        function getWinningCells(player) {
+            // Check rows
+            for (let row = 0; row < gridSize; row++) {
+                for (let col = 0; col <= gridSize - 5; col++) {
+                    const start = row * gridSize + col;
+                    if ([0, 1, 2, 3, 4].every(i => gameBoard[start + i] === player)) {
+                        return [0, 1, 2, 3, 4].map(i => start + i);
+                    }
+                }
+            }
+            // Check columns
+            for (let col = 0; col < gridSize; col++) {
+                for (let row = 0; row <= gridSize - 5; row++) {
+                    const start = row * gridSize + col;
+                    if ([0, 1, 2, 3, 4].every(i => gameBoard[start + i * gridSize] === player)) {
+                        return [0, 1, 2, 3, 4].map(i => start + i * gridSize);
+                    }
+                }
+            }
+            // Check main diagonals
+            for (let row = 0; row <= gridSize - 5; row++) {
+                for (let col = 0; col <= gridSize - 5; col++) {
+                    const start = row * gridSize + col;
+                    if ([0, 1, 2, 3, 4].every(i => gameBoard[start + i * (gridSize + 1)] === player)) {
+                        return [0, 1, 2, 3, 4].map(i => start + i * (gridSize + 1));
+                    }
+                }
+            }
+            // Check anti-diagonals
+            for (let row = 0; row <= gridSize - 5; row++) {
+                for (let col = 4; col < gridSize; col++) {
+                    const start = row * gridSize + col;
+                    if ([0, 1, 2, 3, 4].every(i => gameBoard[start + i * (gridSize - 1)] === player)) {
+                        return [0, 1, 2, 3, 4].map(i => start + i * (gridSize - 1));
+                    }
+                }
+            }
+            return [];
         }
 
         // Bot move based on difficulty
@@ -160,7 +267,7 @@
             }
         }
 
-        // Hard Bot (~10% player win rate): Very strong but allows rare wins
+        // Hard Bot (~5% player win rate): Extremely strong, near-optimal
         function findHardBotMove() {
             // 1. Win with 5 in a row
             let move = checkForWinOrBlock('O', 5);
@@ -168,23 +275,23 @@
             // 2. Block player's 5 in a row
             move = checkForWinOrBlock('X', 5);
             if (move !== null) return move;
-            // 3. Use minimax (depth 2)
-            move = minimaxMove(2);
+            // 3. Use minimax (depth 3)
+            move = minimaxMove(3);
             if (move !== null) return move;
             // 4. Set up or block 4 in a row
             move = checkForWinOrBlock('O', 4);
             if (move !== null) return move;
             move = checkForWinOrBlock('X', 4);
             if (move !== null) return move;
-            // 5. Set up or block 3 in a row (75% chance)
-            if (Math.random() >= 0.25) {
+            // 5. Set up or block 3 in a row (90% chance)
+            if (Math.random() >= 0.10) {
                 move = checkForWinOrBlock('O', 3);
                 if (move !== null) return move;
                 move = checkForWinOrBlock('X', 3);
                 if (move !== null) return move;
             }
-            // 6. Set up or block 2 in a row (75% chance)
-            if (Math.random() >= 0.25) {
+            // 6. Set up or block 2 in a row (90% chance)
+            if (Math.random() >= 0.10) {
                 move = checkForWinOrBlock('O', 2);
                 if (move !== null) return move;
                 move = checkForWinOrBlock('X', 2);
@@ -323,17 +430,17 @@
                 const oCount = line.filter(cell => cell === 'O').length;
                 const xCount = line.filter(cell => cell === 'X').length;
                 if (xCount === 0 && oCount >= 2) {
-                    score += Math.pow(9, oCount); // Reward O's for 2+ in a row
+                    score += Math.pow(10, oCount); // Reward O's for 2+ in a row
                 } else if (oCount === 0 && xCount >= 2) {
-                    score -= Math.pow(9, xCount); // Penalize X's for 2+ in a row
+                    score -= Math.pow(10, xCount); // Penalize X's for 2+ in a row
                 }
             }
 
             // Center control bonus
             const centerCells = [44, 45, 54, 55]; // Center 4 cells
             for (const index of centerCells) {
-                if (board[index] === 'O') score += 30;
-                if (board[index] === 'X') score -= 30;
+                if (board[index] === 'O') score += 40;
+                if (board[index] === 'X') score -= 40;
             }
 
             return score;
@@ -365,13 +472,13 @@
                     row < gridSize - 1 && col > 0 ? index + gridSize - 1 : null, // bottom-left
                     row < gridSize - 1 && col < gridSize - 1 ? index + gridSize + 1 : null, // bottom-right
                 ].filter(n => n !== null && gameBoard[n] === 'O');
-                score += neighbors.length * 15; // 15 points per adjacent O
+                score += neighbors.length * 20; // 20 points per adjacent O
 
                 // Center preference
                 const centerRow = Math.abs(row - 4.5);
                 const centerCol = Math.abs(col - 4.5);
                 const centerDistance = Math.sqrt(centerRow * centerRow + centerCol * centerCol);
-                score += (5 - centerDistance) * 7; // Increased bonus for center
+                score += (5 - centerDistance) * 10; // Increased bonus for center
 
                 if (score > bestScore) {
                     bestScore = score;
@@ -502,6 +609,7 @@
             gameBoard = Array(gridSize * gridSize).fill('');
             statusElement.textContent = 'Select a difficulty to start';
             statusElement.style.color = '#000';
+            gameOverlay.style.display = 'none';
             createBoard();
         });
 
